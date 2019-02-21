@@ -8,8 +8,8 @@
     if (!initCalled) {
       const script = document.createElement('script');
       script.src = 'https://maps.googleapis.com/maps/api/js?' +
-        (apiKey ? `key=${apiKey}&` : '') +
-        'callback=__initGoodMap';
+          (apiKey ? `key=${apiKey}&` : '') +
+          'callback=__initGoodMap';
       document.head.appendChild(script);
       initCalled = true;
     }
@@ -18,13 +18,16 @@
 
   customElements.define('good-map', class extends HTMLElement {
     static get observedAttributes() {
-      return ['api-key', 'zoom', 'latitude', 'longitude', 'map-options'];
+      return ['api-key', 'zoom', 'latitude', 'longitude', 'map-options', 'marker-title'];
     }
 
     attributeChangedCallback(name, oldVal, val) {
       switch (name) {
         case 'api-key':
           this.apiKey = val;
+          break;
+        case 'marker-title':
+          this.markerTitle = val;
           break;
         case 'zoom':
         case 'latitude':
@@ -41,10 +44,12 @@
       super();
 
       this.map = null;
+      this.marker = null;
       this.apiKey = null;
       this.zoom = null;
       this.latitude = null;
       this.longitude = null;
+      this.markerTitle = null;
       this.mapOptions = {};
     }
 
@@ -59,7 +64,15 @@
             lng: this.longitude || 0
           };
         }
+
         this.map = new google.maps.Map(this, this.mapOptions);
+
+        this.marker = new google.maps.Marker({
+          position: {lat: this.latitude, lng: this.longitude},
+          map: this.map,
+          title: this.markerTitle
+        });
+
         this.dispatchEvent(new CustomEvent('google-map-ready', { detail: this.map }));
       });
     }

@@ -40,8 +40,13 @@ good-map {
 
 <good-map api-key="AIzaSyAQuo91bcoB-KwWXaANroTrzpNZRFcNJ1k"
     latitude="30"
-    longitude="-100" zoom="2"
-    map-options='{"mapTypeId": "satellite"}'></good-map>
+    longitude="-100" zoom="2" marker-title="My Office"
+    map-options='{"mapTypeId": "roadmap"}'></good-map>
 ```
 
 Attributes on `<good-map>` are used for map initialization only and are not updated when the user interacts with the map. For interactive functionality, listen for the `google-map-ready` event and use `goodMap.map` or `event.detail` to access the underlying instance of [`google.maps.Map`](https://developers.google.com/maps/documentation/javascript/3.exp/reference#Map).
+
+### Marker update
+
+This Version inludes a centered marker.
+lat, lng, marker-title => is all you need to set.
